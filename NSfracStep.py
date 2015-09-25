@@ -138,7 +138,7 @@ tic()
 stop = False
 total_timer = OasisTimer("Start simulations", True)
 while t < (T - tstep*DOLFIN_EPS) and not stop:
-    t += dt
+    t += dt * 2
     tstep += 1
     inner_iter = 0
     udiff = array([1e8]) # Norm of velocity change over last inner iter
