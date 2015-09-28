@@ -15,10 +15,10 @@ NS_parameters.update(
     print_intermediate_info = 100,
     use_krylov_solvers = True)
 
-scalar_components = ["alfa", "beta"]
-Schmidt["alfa"] = 1.
-Schmidt["beta"] = 10.
-#set_log_active(False)
+#scalar_components = ["alfa", "beta"]
+#Schmidt["alfa"] = 1.
+#Schmidt["beta"] = 10.
+set_log_active(False)
 
 # Specify boundary conditions
 def create_bcs(V, **NS_namespace):
@@ -27,9 +27,9 @@ def create_bcs(V, **NS_namespace):
     bc01 = DirichletBC(V, 0, top)
     return dict(u0 = [bc00, bc0],
                 u1 = [bc01, bc0],
-                p  = [],
-                alfa = [bc00],
-                beta = [DirichletBC(V, 1, bottom)])
+                p  = [])
+                #alfa = [bc00],
+               # beta = [DirichletBC(V, 1, bottom)])
                 
 def initialize(x_1, x_2, bcs, **NS_namespace):
     for ui in x_1:
@@ -47,15 +47,17 @@ def temporal_hook(q_, tstep, u_, uv, p_, plot_interval, **NS_namespace):
         assign(uv.sub(1), u_[1])
         plot(uv, title='Velocity')
         plot(p_, title='Pressure')
-        plot(q_['alfa'], title='alfa')
-        plot(q_['beta'], title='beta')
+        file = File("solution.pvd")
+        file << uv
+       # plot(q_['alfa'], title='alfa')
+       # plot(q_['beta'], title='beta')
 
 def theend_hook(u_, p_, uv, mesh, **NS_namespace):
     assign(uv.sub(0), u_[0])
     assign(uv.sub(1), u_[1])
     plot(uv, title='Velocity')
     plot(p_, title='Pressure')
-
+   
     try:
         from fenicstools import StreamFunction
         psi = StreamFunction(uv, [], mesh, use_strong_bc=True)
