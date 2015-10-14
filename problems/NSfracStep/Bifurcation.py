@@ -2,7 +2,7 @@ from ..NSfracStep import *
 
 
 NS_parameters.update(
-    nu = 0.0035,
+    nu = 3.3,
     T  = 1.0,
     dt = 0.01,
     plot_interval = 20,
@@ -10,12 +10,12 @@ NS_parameters.update(
     mesh_path = "/home/stigmn/first-test/carotid2/carotid_mesh.xml",
     use_krylov_solvers = True)
 
-set_log_active(False)
+#set_log_active(False)
 
 def mesh(mesh_path, **NS_namespace):
     return Mesh(mesh_path)
 
-inlet = Expression("0.1")
+inlet = Expression("10")
 inlety = Constant(0.0)
 inletz = Constant(0.0)
 def create_bcs(V, **NS_namespace):
